@@ -119,3 +119,51 @@
   </p>
 
 </form>
+
+<script>
+(function() {
+  // Auto-populate name field based on title
+  var titleField = document.getElementById('field-title');
+  var nameField = document.getElementById('field-name');
+  
+  if (titleField && nameField) {
+    titleField.addEventListener('input', function() {
+      // Solo se il campo name è vuoto o non è stato modificato manualmente
+      if (!nameField.dataset.manuallyEdited) {
+        var slug = titleField.value
+          .toLowerCase()
+          .trim()
+          .replace(/[àáâãäå]/g, 'a')
+          .replace(/[èéêë]/g, 'e')
+          .replace(/[ìíîï]/g, 'i')
+          .replace(/[òóôõö]/g, 'o')
+          .replace(/[ùúûü]/g, 'u')
+          .replace(/[ñ]/g, 'n')
+          .replace(/[ç]/g, 'c')
+          .replace(/[^\w\s-]/g, '') // Rimuove caratteri speciali
+          .replace(/\s+/g, '-')      // Sostituisce spazi con trattini
+          .replace(/-+/g, '-')       // Rimuove trattini multipli
+          .replace(/^-+|-+$/g, '');  // Rimuove trattini all'inizio e alla fine
+        
+        nameField.value = slug;
+        
+        // Trigger event per far funzionare il modulo slug-preview-slug
+        var event = new Event('input', { bubbles: true });
+        nameField.dispatchEvent(event);
+      }
+    });
+    
+    // Marca il campo come modificato manualmente se l'utente ci scrive dentro
+    nameField.addEventListener('keydown', function() {
+      nameField.dataset.manuallyEdited = 'true';
+    });
+    
+    // Resetta il flag se il campo viene svuotato
+    nameField.addEventListener('input', function() {
+      if (nameField.value === '') {
+        delete nameField.dataset.manuallyEdited;
+      }
+    });
+  }
+})();
+</script>

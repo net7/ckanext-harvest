@@ -209,7 +209,7 @@ def harvest_abort_failed_jobs(context, data_dict):
 
     try:
         life_span = int(data_dict.get('life_span'))
-    except ValueError:
+    except (ValueError, TypeError):
         life_span = 7
 
     include_sid = []
