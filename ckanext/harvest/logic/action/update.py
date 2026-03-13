@@ -259,7 +259,7 @@ def harvest_abort_failed_jobs(context, data_dict):
                                 .first()
 
         life_span = update_map.get(harvest_source.frequency)
-        if not life_span:
+        if life_span is None:
             raise Exception('Frequency {freq} not recognised'.format(
                 freq=harvest_source.frequency))
 
